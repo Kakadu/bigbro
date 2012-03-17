@@ -20,37 +20,32 @@ class Main {
   private static var loader2: Loader = null;
   private static var busy = false;
   private static var testUrl1 = 
-    "http://www.freewallpapersbase.com/video-game/wallpapers2/TheWitcher001-wallpaper.jpg"
-;
+    "http://www.freewallpapersbase.com/video-game/wallpapers2/TheWitcher001-wallpaper.jpg";
   private static var testUrl2 = 
-    "http%3A%2F%2Fwww.mmogrindhouse.com%2Fwp-content%2Fuploads%2F2009%2F08%2Fblizzstumes11.jpg";
+    "http://3.bp.blogspot.com/_e73TLiIh1yU/TOVy6XsFLzI/AAAAAAAAAps/xlFHnYstCHQ/s1600/scr2_big.jpg";
   private static var urlCounter = 1;
 
   static function imageLoaded(event) {
-    trace("image Loaded, event.target = " + Std.string(event.target) );
-    root.removeChild(loader);
-    loader = loader2;
-    loader.x = loader.y = 0;
-    loader.width = newWidth;
-    loader.scaleX = loader.scaleY;
-    //loader.height = newHeight;
-    //    root.addChild(loader);
+    try {
+      //trace("root.numChildren = " + root.numChildren);
+      if ((loader != null) && root.contains(loader))
+        root.removeChild(loader);
+      loader = loader2;
+      loader.x = loader.y = 0;
+      loader.width = newWidth;
+      loader.height = newHeight;
+    } catch (err: Dynamic) {
+      trace(err);
+    }
     busy = false;
   }
   static function loadImage() {
-    //trace("busy = " + busy);
-    //    if (!busy) {
-      trace("loading...");
-      loader2 = new Loader();
-      root.addChild(loader2);
-      loader2.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
-      loader2.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loadError);
-      //loader2.width = newWidth;
-      //loader2.height = newHeight;
-      loader2.x = loader2.y = 0;
-      busy = true;
-      loader2.load(new URLRequest(pictureUrl));
-      //    }
+    //trace("loading...");
+    loader2 = new Loader();
+    root.addChild(loader2);
+    loader2.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
+    loader2.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loadError);
+    loader2.load(new URLRequest(pictureUrl));  
   }
   static function loadError(event) {
     trace("Unable to load image: " + event);
@@ -60,12 +55,10 @@ class Main {
       var params = flash.Lib.current.loaderInfo.parameters;      
       newWidth = params.newWidth;
       newHeight = params.newHeight;
-      trace("newWidth,newHeight = " + newWidth + "," + newHeight);
-      pictureUrl = testUrl1;
+      pictureUrl = testUrl2;
       root = flash.Lib.current;
-      loader = new Loader();
-      loader.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
-      loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loadError);
+      //root.width = newWidth;
+      //root.height = newHeight;
       timer = new Timer(2000);
       timer.run = loadImage;
     } catch (error: Dynamic) {
