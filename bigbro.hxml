@@ -1,0 +1,6 @@
+-swf9 bigbro.swf 
+-main Main
+-cp .
+-D network-sandbox
+# to avoid security error while downloading urls
+#-swf-header
