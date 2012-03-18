@@ -19,11 +19,11 @@ class Main {
   private static var container: MovieClip = null;
   private static var loader: Loader = null;
   private static var loader2: Loader = null;
-  //private static var busy = false;
+  private static var interval = 2000;
 
   static function imageLoaded(event) {
     try {
-      trace("root.numChildren = " + root.numChildren);
+      //      trace("root.numChildren = " + root.numChildren);
       if ((loader != null) && root.contains(loader))
         root.removeChild(loader);
       if (loader != null)
@@ -33,6 +33,7 @@ class Main {
       loader.x = loader.y = 0;
       loader.width = newWidth;
       loader.height = newHeight;
+      timer = haxe.Timer.delay(loadImage,interval);
     } catch (err: Dynamic) {
       trace(err);
     }
@@ -62,8 +63,10 @@ class Main {
       container = new MovieClip();
       container.width = newWidth;
       container.height = newHeight;
-      timer = new Timer(params.timeout);
-      timer.run = loadImage;
+      interval = params.timeout;
+      //timer = new Timer(params.timeout);
+      //timer.run = loadImage;
+      loadImage();
     } catch (error: Dynamic) {
       trace("fatal error");
       trace(error);
