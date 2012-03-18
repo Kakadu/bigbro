@@ -20,10 +20,11 @@ class Main {
   private static var loader: Loader = null;
   private static var loader2: Loader = null;
   private static var busy = false;
-  private static var testUrl1 = 
+  /*  private static var testUrl1 = 
     "http://www.freewallpapersbase.com/video-game/wallpapers2/TheWitcher001-wallpaper.jpg";
   private static var testUrl2 = 
     "http://3.bp.blogspot.com/_e73TLiIh1yU/TOVy6XsFLzI/AAAAAAAAAps/xlFHnYstCHQ/s1600/scr2_big.jpg";
+  */
   private static var urlCounter = 1;
 
   static function imageLoaded(event) {
@@ -60,6 +61,7 @@ class Main {
       newWidth = params.newWidth;
       newHeight = params.newHeight;
       pictureUrl = params.data;
+      trace ("picrture = " + pictureUrl);
       root = flash.Lib.current;
       container = new MovieClip();
       container.width = newWidth;
