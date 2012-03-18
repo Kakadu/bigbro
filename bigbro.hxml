@@ -1,7 +1,9 @@
 -swf9 bigbro.swf 
+#-swf-version 8
 -main Main
--cp /usr/share/haxe/std
--cp /usr/share/haxe/std/flash
+#-cp /usr/share/haxe/std
+#-cp /usr/share/haxe/std/flash
+-cp .
 -D network-sandbox
 # to avoid security error while downloading urls
 #-swf-header

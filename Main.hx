@@ -4,7 +4,6 @@ import flash.display.Loader;
 import flash.display.PixelSnapping;
 import flash.display.Sprite;
 import flash.display.MovieClip;
-//import flash.MovieClipLoader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
@@ -26,7 +25,6 @@ class Main {
   private static var testUrl2 = 
     "http://3.bp.blogspot.com/_e73TLiIh1yU/TOVy6XsFLzI/AAAAAAAAAps/xlFHnYstCHQ/s1600/scr2_big.jpg";
   private static var urlCounter = 1;
-  private static var movieClipLoader = new flash.MovieClipLoader();
 
   static function imageLoaded(event) {
     try {
@@ -44,15 +42,14 @@ class Main {
   }
   static function loadImage() {
     //trace("loading...");
-    movieClipLoader.loadClip(pictureUrl, container);
+    //movieClipLoader.loadClip(pictureUrl, container);
     //    loader.addEventListener
-    /*
+    
     loader2 = new Loader();
     root.addChild(loader2);
     loader2.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
     loader2.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loadError);
-    loader2.load(new URLRequest(pictureUrl));  
-    */
+    loader2.load(new URLRequest(pictureUrl));    
   }
   static function loadError(event) {
     trace("Unable to load image: " + event);
@@ -62,7 +59,7 @@ class Main {
       var params = flash.Lib.current.loaderInfo.parameters;      
       newWidth = params.newWidth;
       newHeight = params.newHeight;
-      pictureUrl = testUrl2;
+      pictureUrl = params.data;
       root = flash.Lib.current;
       container = new MovieClip();
       container.width = newWidth;
