@@ -19,19 +19,16 @@ class Main {
   private static var container: MovieClip = null;
   private static var loader: Loader = null;
   private static var loader2: Loader = null;
-  private static var busy = false;
-  /*  private static var testUrl1 = 
-    "http://www.freewallpapersbase.com/video-game/wallpapers2/TheWitcher001-wallpaper.jpg";
-  private static var testUrl2 = 
-    "http://3.bp.blogspot.com/_e73TLiIh1yU/TOVy6XsFLzI/AAAAAAAAAps/xlFHnYstCHQ/s1600/scr2_big.jpg";
-  */
-  private static var urlCounter = 1;
+  //private static var busy = false;
 
   static function imageLoaded(event) {
     try {
-      //trace("root.numChildren = " + root.numChildren);
+      trace("root.numChildren = " + root.numChildren);
       if ((loader != null) && root.contains(loader))
         root.removeChild(loader);
+      if (loader != null)
+        loader.visible = true;
+      loader2.visible = true;
       loader = loader2;
       loader.x = loader.y = 0;
       loader.width = newWidth;
@@ -39,7 +36,6 @@ class Main {
     } catch (err: Dynamic) {
       trace(err);
     }
-    busy = false;
   }
   static function loadImage() {
     //trace("loading...");
@@ -58,17 +54,15 @@ class Main {
   static function main() {
     try {
       var params = flash.Lib.current.loaderInfo.parameters;      
-      newWidth = params.newWidth;
-      newHeight = params.newHeight;
       pictureUrl = params.data;
-      trace ("picrture = " + pictureUrl);
+      trace ("picture = " + pictureUrl);
       root = flash.Lib.current;
+      newWidth  = flash.Lib.current.stage.stageWidth;
+      newHeight = flash.Lib.current.stage.stageHeight;
       container = new MovieClip();
       container.width = newWidth;
       container.height = newHeight;
-      //root.width = newWidth;
-      //root.height = newHeight;
-      timer = new Timer(2000);
+      timer = new Timer(params.timeout);
       timer.run = loadImage;
     } catch (error: Dynamic) {
       trace("fatal error");

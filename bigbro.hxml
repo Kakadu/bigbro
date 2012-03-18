@@ -1,5 +1,6 @@
 -swf9 bigbro.swf 
 #-swf-version 8
+--flash-use-stage
 -main Main
 #-cp /usr/share/haxe/std
 #-cp /usr/share/haxe/std/flash
