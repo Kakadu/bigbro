@@ -1,3 +1,3 @@
 all:
-	haxe bigbro.hxml
+	haxe.exe bigbro.hxml
 

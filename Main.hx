@@ -9,6 +9,63 @@ import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
 import haxe.Timer;
+import haxe.Http;
+
+class URLParser
+{
+    // Publics
+    public var url : String;
+    public var source : String;
+    public var protocol : String;
+    public var authority : String;
+    public var userInfo : String;
+    public var user : String;
+    public var password : String;
+    public var host : String;
+    public var port : String;
+    public var relative : String;
+    public var path : String;
+    public var directory : String;
+    public var file : String;
+    public var query : String;
+    public var anchor : String;
+ 
+    // Privates
+    inline static private var _parts : Array<String> = ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"];
+ 
+    public function new(url:String)
+    {
+        // Save for 'ron
+        this.url = url;
+ 
+        // The almighty regexp (courtesy of http://blog.stevenlevithan.com/archives/parseuri)
+        var r : EReg = ~/^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/;
+ 
+        // Match the regexp to the url
+        r.match(url);
+ 
+        // Use reflection to set each part
+        for (i in 0..._parts.length)
+        {
+            Reflect.setField(this, _parts[i],  r.matched(i));
+        }
+    }
+/* 
+    public function toString() : String
+    {
+        var s : String = "For Url -> " + url + "\n";
+        for (i in 0..._parts.length)
+        {
+            s += _parts[i] + ": " + Reflect.field(this, _parts[i]) + (i==_parts.length-1?"":"\n");
+        }
+        return s;
+    }
+*/ 
+    public static function parse(url:String) : URLParser
+    {
+        return new URLParser(url);
+    }
+}
 
 class Main {
   private static var newWidth: Null<Int> = null;
@@ -20,6 +77,7 @@ class Main {
   private static var loader: Loader = null;
   private static var loader2: Loader = null;
   private static var interval = 2000;
+  private static var domains_arr: Array<String> = [];
 
   static function imageLoaded(event) {
     try {
@@ -56,6 +114,14 @@ class Main {
     try {
       var params = flash.Lib.current.loaderInfo.parameters;      
       pictureUrl = params.data;
+      var domains: String = if (params.domains!=null) params.domains else "";
+      domains_arr = domains.split(",");
+      domains_arr.insert(0,URLParser.parse(pictureUrl).authority);
+      domains_arr.push("static-cdn1.ustream.tv");
+      
+      for (domain in domains_arr)       
+         flash.system.Security.allowDomain(domain);
+	  trace(domains_arr.join(","));
       trace ("picture = " + pictureUrl);
       root = flash.Lib.current;
       newWidth  = flash.Lib.current.stage.stageWidth;
@@ -68,8 +134,9 @@ class Main {
       //timer.run = loadImage;
       loadImage();
     } catch (error: Dynamic) {
-      trace("fatal error");
       trace(error);
+      for (x in haxe.Stack.exceptionStack())
+	    trace(x);				
     }
   }
 }
