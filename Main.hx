@@ -91,7 +91,10 @@ class Main {
       loader.x = loader.y = 0;
       loader.width = newWidth;
       loader.height = newHeight;
-      timer = haxe.Timer.delay(loadImage,interval);
+      //trace(loader.contentLoaderInfo.contentType); //application/x-shockwave-flash
+      if (Std.string(loader.contentLoaderInfo.contentType) != "application/x-shockwave-flash") {
+	      timer = haxe.Timer.delay(loadImage,interval);
+	  }
     } catch (err: Dynamic) {
       trace(err);
     }
